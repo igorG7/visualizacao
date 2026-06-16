@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Validação de criativos — Avanz Imóveis</title>
+<style>
+  :root{
+    --navy:#0F172A; --navy-2:#1E293B; --navy-3:#334155;
+    --orange:#F97316; --orange-soft:#fb923c;
+    --ink:#0b1220; --paper:#f1f5f9; --card:#ffffff;
+    --muted:#64748b; --line:#e2e8f0;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;
+  }
+  a{color:inherit}
+
+  /* ---- top bar ---- */
+  header.top{
+    position:sticky; top:0; z-index:20;
+    background:var(--navy); color:#fff;
+    padding:18px 22px; display:flex; flex-wrap:wrap; gap:12px 20px;
+    align-items:center; justify-content:space-between;
+    box-shadow:0 2px 14px rgba(2,6,23,.25);
+  }
+  .top .brand{display:flex; align-items:center; gap:12px; font-weight:700; font-size:18px; letter-spacing:.2px}
+  .top .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--orange);display:inline-block}
+  .top .brand small{display:block;font-weight:500;font-size:12px;color:#94a3b8;letter-spacing:.4px}
+  nav.jump{display:flex;flex-wrap:wrap;gap:8px}
+  nav.jump a{
+    text-decoration:none;font-size:13px;font-weight:600;
+    padding:7px 12px;border-radius:999px;background:var(--navy-2);
+    color:#cbd5e1;border:1px solid var(--navy-3);white-space:nowrap;transition:.15s
+  }
+  nav.jump a:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+
+  main{max-width:1180px;margin:0 auto;padding:28px 20px 80px}
+
+  .intro{color:var(--muted);font-size:14px;margin:6px 2px 30px}
+
+  /* ---- theme ---- */
+  .theme{margin-bottom:54px;scroll-margin-top:90px}
+  .theme-head{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;box-shadow:0 1px 3px rgba(2,6,23,.06);
+    border-left:5px solid var(--orange);
+  }
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .badge{font-size:12px;font-weight:700;letter-spacing:.3px;padding:4px 10px;border-radius:999px}
+  .badge.id{background:var(--navy);color:#fff}
+  .badge.pillar{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+  .badge.vcount{background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}
+  .theme-head h2{margin:4px 0 0;font-size:21px;line-height:1.3;color:var(--navy)}
+
+  /* ---- caption ---- */
+  .caption{
+    margin-top:16px;background:#f8fafc;border:1px dashed var(--line);
+    border-radius:12px;padding:16px 18px;
+  }
+  .caption h3{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+  .caption p{margin:0 0 10px;font-size:14.5px;color:#1e293b}
+  .caption p:last-child{margin-bottom:0}
+  .caption details summary{
+    cursor:pointer;font-size:13px;font-weight:600;color:var(--orange);
+    list-style:none;user-select:none
+  }
+  .caption details summary::-webkit-details-marker{display:none}
+  .caption details summary::before{content:"▸ ";}
+  .caption details[open] summary::before{content:"▾ "}
+
+  /* ---- versions ---- */
+  .versions{margin-top:22px;display:grid;gap:22px}
+  .versions.cols-2{grid-template-columns:1fr 1fr}
+  .versions.cols-2 .shot img{max-width:320px;margin:0 auto}
+  .version{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;box-shadow:0 1px 3px rgba(2,6,23,.06)
+  }
+  .version-head{
+    padding:13px 18px;background:var(--navy-2);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;gap:10px
+  }
+  .version-head .v-name{font-weight:700;font-size:14px}
+  .version-head .v-tag{font-size:11px;color:#94a3b8;font-weight:600;letter-spacing:.3px}
+  .version-body{padding:18px}
+
+  /* single / dual posts */
+  .shots{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .shot figure{margin:0}
+  .shot img{
+    width:100%;display:block;border-radius:10px;border:1px solid var(--line);
+    background:#0b1220;cursor:zoom-in;transition:.15s
+  }
+  .shot img:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(2,6,23,.18)}
+  .shot figcaption{font-size:12px;color:var(--muted);text-align:center;margin-top:7px;font-weight:600}
+
+  /* carousel grid (wraps to multiple rows) */
+  .carousel{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  .carousel .slide img{
+    width:100%;display:block;border-radius:10px;border:1px solid var(--line);
+    background:#0b1220;cursor:zoom-in;aspect-ratio:1/1;object-fit:cover
+  }
+  .carousel .slide .n{font-size:12px;color:var(--muted);text-align:center;margin-top:6px;font-weight:700}
+  .hint{font-size:12px;color:var(--muted);margin:0 0 10px}
+
+  /* ---- lightbox ---- */
+  .lb{
+    position:fixed;inset:0;background:rgba(2,6,23,.92);display:none;
+    align-items:center;justify-content:center;z-index:100;padding:24px;cursor:zoom-out
+  }
+  .lb.open{display:flex}
+  .lb img{max-width:96vw;max-height:92vh;border-radius:8px;box-shadow:0 10px 60px rgba(0,0,0,.6)}
+  .lb .close{position:fixed;top:18px;right:24px;color:#fff;font-size:34px;font-weight:300;cursor:pointer;line-height:1}
+  .lb .cap{position:fixed;bottom:18px;left:0;right:0;text-align:center;color:#cbd5e1;font-size:13px}
+
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:30px 20px 50px}
+
+  @media(max-width:640px){
+    .theme-head h2{font-size:18px}
+    .carousel{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+    .versions.cols-2{grid-template-columns:1fr}
+    nav.jump{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="dot"></span>
+    <div>Validação de criativos
+      <small>Avanz Imóveis · content-radar</small>
+    </div>
+  </div>
+  <nav class="jump">
+    <a href="#t1">Aluguel RMBH</a>
+    <a href="#t2">Mercado BH</a>
+    <a href="#t3">Decisão SFH</a>
+  </nav>
+</header>
+
+<main>
+  <p class="intro">3 temas · criativos em JPG com suas versões e legendas oficiais do brief. Clique em qualquer imagem para ampliar.</p>
+
+  <!-- =================== TEMA 1 =================== -->
+  <section class="theme" id="t1">
+    <div class="theme-head">
+      <div class="badges">
+        <span class="badge id">2026-W22-001</span>
+        <span class="badge pillar">Pilar 6 · Mercado RMBH</span>
+        <span class="badge vcount">2 versões · carrossel 5 slides</span>
+      </div>
+      <h2>BH: aluguel +1,37% em abril e +8,40% em 12 meses — o dobro do IPCA</h2>
+
+      <div class="caption">
+        <h3>Legenda</h3>
+        <p>Em BH, quem está no aluguel viu o reajuste subir quase o dobro do IPCA — e isso muda a conta de comprar.</p>
+        <details>
+          <summary>ver legenda completa</summary>
+          <div style="margin-top:10px">
+            <p>O Índice FipeZAP de Locação Residencial mostrou que o aluguel em Belo Horizonte subiu 1,37% só em abril, entre os maiores reajustes do país. Em 12 meses, a alta dos aluguéis chega a 8,40% — quase o dobro do IPCA (4,39%) no mesmo período.</p>
+            <p>Na prática: cada mês que você renova o contrato de aluguel, a parcela sobe mais que a inflação. E enquanto isso, o lote que você pensa em comprar na RMBH segue rendendo do outro lado da conta — o seu, não do proprietário.</p>
+            <p>Não vendemos aluguel: ajuda você a entender se já está na hora de sair dele. O passo a passo começa com uma simulação simples, sem compromisso e com documentação ok desde o início.</p>
+            <p>Quer entender se esse caminho é pra você? Manda no WhatsApp que a gente conversa sem compromisso.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="versions">
+      <div class="version">
+        <div class="version-head"><span class="v-name">Carrossel A</span><span class="v-tag">5 slides</span></div>
+        <div class="version-body">
+          <div class="carousel">
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20A/aluguel-rmbh-A-01.jpg" alt="A slide 1"><div class="n">01</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20A/aluguel-rmbh-A-02.jpg" alt="A slide 2"><div class="n">02</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20A/aluguel-rmbh-A-03.jpg" alt="A slide 3"><div class="n">03</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20A/aluguel-rmbh-A-04.jpg" alt="A slide 4"><div class="n">04</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20A/aluguel-rmbh-A-05.jpg" alt="A slide 5"><div class="n">05</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="version">
+        <div class="version-head"><span class="v-name">Carrossel B</span><span class="v-tag">5 slides</span></div>
+        <div class="version-body">
+          <div class="carousel">
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20B/aluguel-rmbh-B-01.jpg" alt="B slide 1"><div class="n">01</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20B/aluguel-rmbh-B-02.jpg" alt="B slide 2"><div class="n">02</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20B/aluguel-rmbh-B-03.jpg" alt="B slide 3"><div class="n">03</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20B/aluguel-rmbh-B-04.jpg" alt="B slide 4"><div class="n">04</div></div>
+            <div class="slide"><img src="carrossel-aluguel-rmbh/Carrossel%20B/aluguel-rmbh-B-05.jpg" alt="B slide 5"><div class="n">05</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== TEMA 2 =================== -->
+  <section class="theme" id="t2">
+    <div class="theme-head">
+      <div class="badges">
+        <span class="badge id">2026-W22-002</span>
+        <span class="badge pillar">Pilar 6 · Mercado RMBH</span>
+        <span class="badge vcount">2 versões</span>
+      </div>
+      <h2>Imóvel em BH se aproxima de R$ 700 mil: +4% no Q1 e escassez de lançamentos</h2>
+
+      <div class="caption">
+        <h3>Legenda</h3>
+        <p>BH está perto de R$ 700 mil por imóvel — e o motivo não é só especulação: a capital simplesmente não tem mais onde lançar.</p>
+        <details>
+          <summary>ver legenda completa</summary>
+          <div style="margin-top:10px">
+            <p>Segundo o CMI/Secovi-MG, o preço médio dos imóveis residenciais em Belo Horizonte fechou o primeiro trimestre de 2026 em R$ 689,9 mil, alta de 4% em relação a 2025. Por trás desse número: custo de obra subindo, mão de obra mais cara e — o ponto que pouca gente comenta — a limitação geográfica de BH, que freia novos lançamentos.</p>
+            <p>Enquanto isso, o segmento econômico (até R$ 350 mil) recuou 19,9% nas vendas. Quem busca o primeiro imóvel dentro de BH está espremido por dois lados: oferta menor e ticket subindo.</p>
+            <p>Para muita família que está saindo do aluguel, o passo a passo mais tranquilo hoje começa um pouco antes — na RMBH, com terreno e construção própria, documentação ok desde o início e parcela que cabe. É a decisão certa que a gente ajuda a destravar.</p>
+            <p>Quer entender se esse caminho é pra você? Manda no WhatsApp que a gente conversa sem compromisso.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="versions cols-2">
+      <div class="version">
+        <div class="version-head"><span class="v-name">v1 — Navy (grid)</span><span class="v-tag">post único</span></div>
+        <div class="version-body">
+          <div class="shots">
+            <div class="shot"><figure><img src="post-mercado-imovel-bh/v1%20-%20Navy%20(grid)/mercado-imovel-bh-v1.jpg" alt="Mercado BH v1 navy"><figcaption>Navy</figcaption></figure></div>
+          </div>
+        </div>
+      </div>
+      <div class="version">
+        <div class="version-head"><span class="v-name">v2 — Light</span><span class="v-tag">post único</span></div>
+        <div class="version-body">
+          <div class="shots">
+            <div class="shot"><figure><img src="post-mercado-imovel-bh/v2%20-%20Light/mercado-imovel-bh-v2-light.jpg" alt="Mercado BH v2 light"><figcaption>Light</figcaption></figure></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== TEMA 3 =================== -->
+  <section class="theme" id="t3">
+    <div class="theme-head">
+      <div class="badges">
+        <span class="badge id">2026-W23-003</span>
+        <span class="badge pillar">Pilar 2 · Decisão inteligente</span>
+        <span class="badge vcount">2 versões · dark + light</span>
+      </div>
+      <h2>Financiar terreno e construção em 2026: como o SFH gera 20% de patrimônio na largada</h2>
+
+      <div class="caption">
+        <h3>Legenda</h3>
+        <p>Construir sai mais barato que comprar pronto em 2026 — e o banco libera o dinheiro por etapas, conforme a obra anda.</p>
+        <details>
+          <summary>ver legenda completa</summary>
+          <div style="margin-top:10px">
+            <p>A conta é simples: quando você compra uma casa pronta, o preço já inclui o lucro do incorporador. Quando financia terreno + construção, esse lucro fica com você na forma de patrimônio. Na média, no dia 1 até 20% do imóvel já é seu — sem mágica, é o repasse do que seria margem do construtor.</p>
+            <p>O desenho do SFH (Sistema Financeiro da Habitação) ajuda: imóveis até R$ 2,25 milhões entram em taxas subsidiadas, hoje na casa de 11,19% ao ano na Caixa — muito abaixo da Selic atual de 14,75%. E o FGTS pode entrar como entrada do terreno, entrada da obra, ou pra amortizar o saldo devedor ao longo do contrato.</p>
+            <p>A regra prática pra primeiro imóvel na RMBH: simule no Caixa antes de escolher o lote. O valor que o banco aprova define o teto da obra — e o teto da obra define o tamanho do terreno que faz sentido. Inverter essa ordem é o erro mais comum de quem chega aqui querendo sair do aluguel.</p>
+            <p>Quer entender se esse caminho é pra você? Manda no WhatsApp que a gente conversa sem compromisso.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="versions">
+      <div class="version">
+        <div class="version-head"><span class="v-name">v1 — Casa</span><span class="v-tag">dark / light</span></div>
+        <div class="version-body">
+          <div class="shots">
+            <div class="shot"><figure><img src="post-decisao-sfh%20(1)/v1%20-%20Casa/decisao-sfh-v1-dark.jpg" alt="Decisão SFH v1 dark"><figcaption>Dark</figcaption></figure></div>
+            <div class="shot"><figure><img src="post-decisao-sfh%20(1)/v1%20-%20Casa/decisao-sfh-v1-light.jpg" alt="Decisão SFH v1 light"><figcaption>Light</figcaption></figure></div>
+          </div>
+        </div>
+      </div>
+      <div class="version">
+        <div class="version-head"><span class="v-name">v2 — Contrato</span><span class="v-tag">dark / light</span></div>
+        <div class="version-body">
+          <div class="shots">
+            <div class="shot"><figure><img src="post-decisao-sfh%20(1)/v2%20-%20Contrato/decisao-sfh-v2-dark.jpg" alt="Decisão SFH v2 dark"><figcaption>Dark</figcaption></figure></div>
+            <div class="shot"><figure><img src="post-decisao-sfh%20(1)/v2%20-%20Contrato/decisao-sfh-v2-light.jpg" alt="Decisão SFH v2 light"><figcaption>Light</figcaption></figure></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>content-radar · w-view — material de validação interno · Avanz Imóveis</footer>
+</main>
+
+<!-- lightbox -->
+<div class="lb" id="lb">
+  <span class="close" id="lbClose">&times;</span>
+  <img id="lbImg" src="" alt="">
+  <div class="cap" id="lbCap"></div>
+</div>
+
+<script>
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCap');
+  document.querySelectorAll('.shot img, .carousel .slide img').forEach(img=>{
+    img.addEventListener('click',()=>{
+      lbImg.src = img.src;
+      lbCap.textContent = img.alt || '';
+      lb.classList.add('open');
+    });
+  });
+  function closeLb(){ lb.classList.remove('open'); lbImg.src=''; }
+  lb.addEventListener('click', closeLb);
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLb(); });
+</script>
+</body>
+</html>
